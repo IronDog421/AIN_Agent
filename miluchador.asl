@@ -23,19 +23,6 @@
 
 +periodicPerception: true
   <-
-
-  if(decidedPack == true){
-    .print("I'm going to get the pack!");
-  }
-
-  if(wantPack == true){
-    .print("I want a pack!");
-  }
-
-  if(firstPhase == true){
-    .print("First phase!");
-  }
-
   
 
   // Check if the ammo has changed in a period of 5 seconds
@@ -47,8 +34,6 @@
     +oneUseVar;
     -decidedPack;
     -firstPhase;
-
-
   } else {
 
     //¿NECESITO SALUD? -> NEEDHEALTH = TRUE
@@ -152,6 +137,8 @@
 
   if(decidedPack){
     -decidedPack;
+    -needAmmo;
+    -needHealth;
   };
   +oneUseVar.
 
