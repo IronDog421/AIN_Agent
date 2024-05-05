@@ -10,22 +10,17 @@
   //INITIAL BEHAVIOUR
   +firstPhase;
 
-
-
-
+  //ONE USE VAR TO AVOID OVERLOAD
   +oneUseVar;
-
 
   //PERCEPTION SYSTEM
   +periodicPerception.
-
-
 
 +periodicPerception: true
   <-
   
 
-  // Check if the ammo has changed in a period of 5 seconds
+  // CHECK IF THE AMMO HAS DECREASED
   ?ammo(Ammo);
   .wait(1000);
   ?ammo(NewAmmo);
@@ -36,24 +31,33 @@
     -firstPhase;
   } else {
 
-    //¿NECESITO SALUD? -> NEEDHEALTH = TRUE
+
+
+    ?health(Health);
+
+    if(Health >= 90 & NewAmmo >= 90){
+      -wantPack;
+    };
+      
+
+    // NEED HEALTH? -> NEEDHEALTH = TRUE
     if(not(needHealth)){
         ?health(H);
       if(H < 90){
         .print("I need health!");
         +wantPack;
         +needHealth;
-      };
+      }
     };
 
-    //¿NECESITO MUNICIÓN? -> NEEDAMMO = TRUE
+    // NEED AMMO? -> NEEDAMMO = TRUE
     if(not(needAmmo)){
         ?ammo(A);
       if(A < 90){
         .print("I need ammo!");
         +wantPack;
         +needAmmo;
-      };
+      }
     };
 
     if(oneUseVar & not(decidedPack)){
@@ -89,7 +93,7 @@
 
 +continueMovement: true
   <-
-  -decidedPack;
+  //-decidedPack;
 
   .print("Hacia el centro");
   ?position(Position);
@@ -126,10 +130,7 @@
   +fullRotationVar; 
   +fullRotateFunc.
 
-
-
-
-
+/////OBJECTIVES/////
 +target_reached(T)
   <-
   .print("He llegado a donde quería ir", C);
@@ -139,6 +140,8 @@
     -decidedPack;
     -needAmmo;
     -needHealth;
+    
+    
   };
   +oneUseVar.
 
@@ -148,18 +151,18 @@
   .print("He obtenido:", TYPE, "con cantidad:", N);
   -decidedPack;
   -wantPack;
+   
+  -needAmmo;
+  -needHealth.
 
-  ?health(H);
-  ?ammo(A);  
-
-  if(TYPE==1002){
-      -needAmmo;
-  }else{
-      -needHealth;
-  }.
+  //if(TYPE==1002){
+  //    -needAmmo;
+  //}else{
+  //    -needHealth;
+  //}.
   
   
-
+/////FOV/////
 +friends_in_fov(ID,Type,Angle,Distance,Health,Position)
   <-
   .shoot(3,Position).
@@ -183,7 +186,7 @@
     
   }.
 
-// Acción para rotar el agente cada 1 segundo
+/////ROTATION FUNCTIONS/////
 +halfRotateFunc: halfRotationVar
 <- 
 .turn(0.8); // Gira el agente 0.1 radianes
