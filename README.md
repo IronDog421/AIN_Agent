@@ -20,7 +20,7 @@ To use these agents in a PyGOMAS game, follow these steps:
 
 5. **Visualize the game:** Use PyGOMAS's visualization tools to observe the game session in real-time. You can visualize the game in both 2D and 3D modes.
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/6M92KVNzyVs/1.jpg)](https://youtu.be/6M92KVNzyVs)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/6M92KVNzyVs/0.jpg)](https://youtu.be/6M92KVNzyVs)
 
 ## Agent Files
 
