@@ -22,7 +22,7 @@ To use these agents in a PyGOMAS game, follow these steps:
 
 ## Agent Files
 
-The agent files in this repository are written in the AgentSpeak language (.asl). Each file represents the behavior and strategy of an individual agent in the game. You can browse through the files to understand different strategies and customize them according to your needs.
+The agent files in this repository are written in the AgentSpeak language (.asl). Each file represents the behavior and strategy of an individual agent (or a group of agents) in the game. You can browse through the files to understand different strategies and customize them according to your needs.
 
 ## Contributing
 
