@@ -1,0 +1,57 @@
+{
+    "host": "gtirouter.dsic.upv.es",
+    "manager": "manager_cruiagu",
+    "manager_password": "secret",
+    "service": "service_cruiagu",
+    "service_password": "secret",
+    "axis": [
+        {
+            "rank": "BDISoldier",
+            "name": "axis_cruiagu",
+            "password": "secret",
+            "amount": 8,
+            "asl": "bdisoldier.asl"
+        },
+        {
+            "rank": "BDIMedic",
+            "name": "medic_axis_cruiagu",
+            "password": "secret",
+            "asl": "bdimedic.asl"
+        },
+        {
+            "rank": "BDIFieldOp",
+            "name": "fieldop_axis_cruiagu",
+            "password": "secret",
+            "asl": "bdifieldop.asl"
+        }
+    ],
+    "allied": [
+        {
+            "rank": "BDISoldier",
+            "name": "team_1_soldier_allied_cruiagu",
+            "password": "secret",
+            "amount": 5,
+            "asl": "equipo1.asl"
+        },
+        {
+            "rank": "BDIMedic",
+            "name": "team_2_medic_allied_cruiagu",
+            "password": "secret",
+            "amount": 2,
+            "asl": "equipo2.asl"
+        },
+        {
+            "rank": "BDIFieldOp",
+            "name": "team_2_fieldop_allied_cruiagu",
+            "password": "secret",
+            "amount": 2,
+            "asl": "equipo2.asl"
+        },
+        {
+            "rank": "advancedLogistic.BDIAdvancedLogistic",
+            "name": "allied_cruiagu",
+            "password": "secret",
+            "asl": "estelaGit.asl"
+        }
+    ]
+}
