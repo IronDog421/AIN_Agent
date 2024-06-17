@@ -1,89 +1,101 @@
-//TEAM_ALLIED 
+/////////////////////////
+//*CLASE DE INFANTERIA*//
+/////////////////////////
+
+//////////////////////////////////////
+//*Por Carlos Ruiz y Andres Pacheco*//
+//////////////////////////////////////
 
 +flag (F)
   <-
-  .wait(1000);
-  .register_service("equipo");
-  .wait(500);
-  .register_service("equipo1");
-  +criticalSystem;
-  +canAttack;
-  
+  ///////////////////////////
+  //*Registro de servicios*//
+  ///////////////////////////
+
+  .register_service("infanteria");
   .get_service("capitan");
-  
-  .wait(200);
+  .wait(300);
   +periodicPerception.
-
-
-///////////////////////////
-//*SISTEMA DE PERCEPCIÓN*//
-///////////////////////////
-+periodicPerception
-  <-
-  ?ammo(Ammo);
-  ?health(Health);
-
-  /////////////////////////////////
-  //*SOLICITAR SEGUNDA FORMACIÓN*//
-  /////////////////////////////////
-  if((Health < 50 | Ammo <10)){
-    -criticalSystem;
-    .get_service("capitan");
-    if(capitan(C)){
-      .send(C, tell, estelaComeOnWeAreOnTrouble);
-    }
-    
-  }
-
-  .wait(500);
-  -+periodicPerception.
-
-
-+lonely
-  <-
-  +lonely.
 
 +goto(Pos)
   <-
-  .print("Recibido un mensaje de tipo ir_a de para ir a: ", Pos);
   .goto(Pos).
 
-+setAttack(Value)
++setBurst(Burst)
   <-
-  .wait(1000);
-  if(Value==1){
-    +canAttack;
-  } else{
-    -canAttack;
-    .wait(3000);
-    +canAttack;
-  }.
+  +burst(Burst).
 
-+lastMovement(Pos)
++updateBurst(Burst)
   <-
-  .print("PACA PACHECOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-  .goto(Pos);
-  .wait(5000);
-  ?flag(F2);
-  .goto(F2).
+  ?burst(AuxBurst);
+  -burst(AuxBurst);
+  +burst(Burst).
 
 +flag_taken: team(100) 
   <-
+  //////////////////////
+  //*Plan de retirada*//
+  //////////////////////
+  
   .print("In ASL, TEAM_ALLIED flag_taken");
   ?base(B);
   +returning;
-  .goto(B).
+  .goto(B);
+
+  .get_service("capitan");
+  .get_service("infanteria");
+  .wait(500);
+  if(capitan(C)){
+      .send(C, tell, goto(B));
+  };
+
+  if(infanteria(I)){
+    .send(I, tell, goto(B));
+  }.
 
 +target_reached(T): team(100)
   <- 
+  ///////////////////////////
+  //*Aviso de reagrupación*//
+  ///////////////////////////
+
+  .get_service("capitan");
+  .wait(500);
+  if(capitan(C)){
+    .send(C, tell, someoneHasArrived);
+  }.
+
++periodicPerception
+  <-
+  ///////////////////////////
+  //*Sistema de percepción*//
+  ///////////////////////////
+
+  ?ammo(A);
+
+  if(A <= 80 & not(strained)){
+    .get_service("capitan");
+    .wait(500);
     if(capitan(C)){
-      .send(C, tell, someoneHasArrived);
-    };
-    if(lonely){
-      ?flag(F);
-      .goto(F);
-    }.
+        .send(C, tell, moreStrain);
+        +strained;
+      };
+  };
+
+  .wait(500);
+
+  -+periodicPerception.
   
-+enemies_in_fov(ID,Type,Angle,Distance,Health,Position) : canAttack
++enemies_in_fov(ID,Type,Angle,Distance,Health,Position)
   <- 
-    .shoot(3,Position).
+  /////////////////////
+  //*Modo de disparo*//
+  /////////////////////
+  ?burst(B);
+
+  if(burst(B)){
+    .shoot(B,Position);
+  } else{
+    .shoot(3,Position);
+  }.
+

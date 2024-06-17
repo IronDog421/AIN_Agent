@@ -1,140 +1,131 @@
-//ESTELA
+////////////////////////////////
+//*CLASE DE CAPITAN LOGISTICO*//
+////////////////////////////////
+
+//////////////////////////////////////
+//*Por Carlos Ruiz y Andres Pacheco*//
+//////////////////////////////////////
 
 +flag (F)
   <-
-  .wait(500);
+  ///////////////////////////
+  //*Registro de servicios*//
+  ///////////////////////////
+
   .register_service("capitan");
-  .wait(3000);
-  +peopleArrived(0);
-  .get_service("equipo");
   .wait(500);
-  +firstAngle;
-  if(equipo(Q)){
+  +peopleArrived(0);
+  .wait(1000);
+  .get_service("infanteria");
+  .wait(500);
+  .getBurst(Burst);
+  .wait(500);
+
+  ////////////////////////////
+  //*Inicio de reagrupación*//
+  ////////////////////////////
+
+  if(infanteria(I)){
     ?position(Pos);
-    .print("¡Es que si hace falta me saco los pechos y los hipnotizo a todos, así, como quién no quiere la cosa, a lo Sabrina!");
-    .send(Q, tell, goto(Pos));
-    -equipo(Q);
+    .print("Todos conmigo!");
+    .send(I, tell, setBurst(Burst));
+    .send(I, tell, goto(Pos));
+    -infanteria(I);
   }.
 
 +flag_taken: team(100) 
   <-
+  //////////////////////
+  //*Plan de retirada*//
+  //////////////////////
+  
   .print("In ASL, TEAM_ALLIED flag_taken");
   ?base(B);
   +returning;
-  .goto(B).
+  .goto(B);
 
-+estelaComeOnWeAreOnTrouble : not(finishedRealign)
-  <-
-  .print("¡Ay, mi Fernando, mi Fernando! ¡Qué mal lo pasé cuando me dejaste por aquella zorra de la esquina!");
-  .addStrain(Res);
-  //Si el strain devuelto es -1, se ha rebasado la tensión permitida
-  if(Res == -1){
-    .get_service("equipo1"); //Los que se retiran
-    .get_service("equipo2");
-    .wait(200);
-
-    if(equipo2(L2)){
-      .send(L2, tell, generate_package);
-      .send(L2, tell, setAttack(1));
-      -equipo2(L2);
-    };
-    .print("He ordenado generar paquetes");
-
-    ?position(Pos);
-    ?flag(F);
-
-    if(equipo1(L1)){
-
-      .send(L1, tell, lastMovement(Pos));
-      .send(L2, tell, setAttack(0));
-      +finishedRealign;
-      -equipo1(L1);
-      //.wait(4500);
-      //+verticalColumn;
-    };
-    
-  }
-  .print(Res).
-
-+verticalColumn
-  <-
-  .print("Vertical Columns");
-
-  .get_service("equipo1");
-
-  .wait(200);
-  if(equipo1(L1)){
-    .print("Calculando");
-
-    ?position([X,Y,Z]);
-
-    .length(L1, L1Length);
-    .vColumn(X,Y,Z,L1Length, Res);
-    
-    if(L1Length >= 0){
-    .nth(0, Res, Pos1);
-    .nth(0, L1, Ag1);
-    .send(Ag1, tell, lastMovement(Pos1));
-
-    }
-
-    if(L1Length >= 1){
-    .nth(1, Res, Pos2);
-    .nth(1, L1, Ag2);
-    .send(Ag2, tell, lastMovement(Pos2));
-    }
-
-    if(L1Length >= 2){
-    .nth(2, Res, Pos3);
-    .nth(2, L1, Ag3);
-    .send(Ag3, tell, lastMovement(Pos3));
-
-    }
-
-    if(L1Length >= 3){
-    .nth(3, Res, Pos4);
-    .nth(3, L1, Ag4);
-    .send(Ag4, tell, lastMovement(Pos4));
-
-    }
-    -equipo1(L1);
-
+  .get_service("capitan");
+  .get_service("infanteria");
+  .wait(500);
+  if(capitan(C)){
+      .send(C, tell, goto(B));
   };
-  .print("Vertical Columns finished").
 
-+someoneHasArrived : not(goToFlag)
+  if(infanteria(I)){
+    .send(I, tell, goto(B));
+  }.
+
++moreStrain : not(strained)
   <-
+  ////////////////////////////////
+  //*Sistema de tensión militar*//
+  ////////////////////////////////
+
+  //////////////////////////////////////////////////////////////
+  //*1. Aumentar la tensión por demanda de las tropas aliadas*//
+  //////////////////////////////////////////////////////////////
+  .addStrain(Res);
+
+  /////////////////////////////////////////////////////////////////////////
+  //*2. Si se supera la tensión del umbral, reducir las balas por ráfaga*//
+  /////////////////////////////////////////////////////////////////////////
+  if(Res == 0){
+    .getBurst(Burst);
+    +strained;
+    .print("Tensión en el equipo. Disminuimos la cantidad de balas por ráfaga para evitar el desperdicio.");
+
+    .get_service("infanteria");
+
+    .wait(500);
+    if(infanteria(I)){
+      .send(I, tell, updateBurst(Burst));
+    };
+  }.
+
++someoneHasArrived : not(firstRegroup)
+  <-
+  ////////////////////////////////////
+  //*Sistema de redirección*//
+  ////////////////////////////////////
+
+  ///////////////////////////////////////////////////
+  //*1. Esperar a la reagrupación total del equipo*//
+  ///////////////////////////////////////////////////
+
   ?peopleArrived(Q);
   H = Q+1;
+  .print("Somos",H+1,"tropas.");
   -peopleArrived(Q);
   +peopleArrived(H);
 
+  ////////////////////////////////////////////
+  //*2. Iniciar la marcha hacia el objetivo*//
+  ////////////////////////////////////////////
+
   if(H >= 9){
     ?flag(F);
-    +goToFlag;
-    .print("Oh, mi Fernando, con su cuerpecito contrahecho y su carita de pan lamiéndome mi pezón... ¡Qué recuerdos!");
-    .get_service("equipo1");
-    .wait(200);
-    if(equipo1(E1)){
-      .send(E1, tell, goto(F));
-      -equipo1(E1);
-    };
-    .wait(5000);
-    .get_service("equipo2");
-    .wait(200);
-    if(equipo2(E2)){
-      .send(E2, tell, goto(F));
-      -equipo2(E2);
-    };
-    .wait(5000);
-    .goto(F);
+    +firstRegroup;
 
+    .get_service("infanteria");
+    .wait(200);
+    if(infanteria(I)){
+      .send(I, tell, goto(F));
+      -equipo1(I);
+    };
+    
+    .goto(F);
+    .print("En marcha!");
   }.
   
 +enemies_in_fov(ID,Type,Angle,Distance,Health,Position)
   <- 
-  if(not(friends_in_fov(ID,Type,Angle,Distance,Health,Position))){
-    -friends_in_fov(ID,Type,Angle,Distance,Health,Position);
-    .shoot(3,Position);
-  }.
+  /////////////////////
+  //*Modo de disparo*//
+  /////////////////////
+
+  .shoot(2,Position).
+
++goto(Pos)
+  <-
+  .goto(Pos).
 
