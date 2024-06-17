@@ -20,13 +20,11 @@ To use these agents in a PyGOMAS game, follow these steps:
 
 5. **Visualize the game:** Use PyGOMAS's visualization tools to observe the game session in real-time. You can visualize the game in both 2D and 3D modes.
 
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/https://youtu.be/6M92KVNzyVs/0.jpg)](https://youtu.be/6M92KVNzyVs)
+
 ## Agent Files
 
 The agent files in this repository are written in the AgentSpeak language (.asl). Each file represents the behavior and strategy of an individual agent (or a group of agents) in the game. You can browse through the files to understand different strategies and customize them according to your needs.
-
-## Contributing
-
-Contributions to this repository are welcome! If you have implemented new and innovative strategies for PyGOMAS agents or have improvements to existing agents, feel free to submit a pull request.
 
 ## License
 
